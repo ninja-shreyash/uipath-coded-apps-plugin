@@ -72,3 +72,7 @@ and (2) confirm the preview looks good.
   any system-wide `uip` install.
 - The CLI is always installed from the public npm registry, so a scoped
   `.npmrc` (e.g. one pointing `@uipath` at a private registry) won't break setup.
+- Works inside sandboxed environments (e.g. Claude Cowork) that route egress
+  through an HTTP proxy: the plugin runs the UiPath CLI with
+  `NODE_USE_ENV_PROXY=1` so its built-in `fetch` honors `HTTP(S)_PROXY`. This is
+  a no-op when no proxy is configured.

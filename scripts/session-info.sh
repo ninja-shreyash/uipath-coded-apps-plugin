@@ -14,6 +14,10 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 UIP="$("$SCRIPT_DIR/resolve-uip.sh")"
 
+# Honor HTTP(S)_PROXY in the CLI's bundled-Node fetch (e.g. Claude Cowork's
+# egress proxy). No-op when no proxy is configured.
+export NODE_USE_ENV_PROXY=1
+
 STATUS_JSON="$("$UIP" login status --output json 2>/dev/null || true)"
 
 python3 - "$STATUS_JSON" <<'PY'

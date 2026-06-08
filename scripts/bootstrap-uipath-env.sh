@@ -30,6 +30,11 @@ LOCK_FILE="${DATA_DIR}/bootstrap.lock"
 # a shell identifier.
 REG_ENV=( "npm_config_@uipath:registry=${PUBLIC_REGISTRY}" "npm_config_registry=${PUBLIC_REGISTRY}" )
 
+# Make the uip CLI's bundled-Node `fetch` honor HTTP(S)_PROXY env vars. Sandboxed
+# environments (e.g. Claude Cowork) route egress through a proxy that curl/npm
+# honor but Node's fetch ignores by default. No-op when no proxy is configured.
+export NODE_USE_ENV_PROXY=1
+
 log() { printf '[uipath-coded-apps] %s\n' "$*" >&2; }
 
 # --- Resolve the private uip binary path ------------------------------------

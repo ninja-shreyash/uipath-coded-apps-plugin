@@ -1,6 +1,6 @@
 {
   "name": "uipath-coded-apps",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Create, pack, publish, and deploy UiPath Coded Apps end-to-end. Guided UiPath sign-in, no commands to run, returns the live app URL.",
   "author": {
     "name": "Shreyash Vaish"

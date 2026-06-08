@@ -14,6 +14,10 @@ ENVIRONMENT="${1:-cloud}"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 UIP="$("$SCRIPT_DIR/resolve-uip.sh")"
 
+# Honor HTTP(S)_PROXY in the CLI's bundled-Node fetch (e.g. Claude Cowork's
+# egress proxy). No-op when no proxy is configured.
+export NODE_USE_ENV_PROXY=1
+
 case "$ENVIRONMENT" in
   cloud)
     echo "Opening UiPath sign-in for Cloud (cloud.uipath.com)..." >&2
