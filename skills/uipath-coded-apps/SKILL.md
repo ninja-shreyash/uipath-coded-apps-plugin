@@ -26,10 +26,12 @@ not ask the user to install anything.
   commands, npm, or CLI flags to the user. Speak in plain language: "Signing
   you in", "Building your app", "Publishing it now".
 - **Run everything yourself.** The user types nothing into a terminal. The only
-  things they do are: sign in through the browser when it opens, and say
-  whether the previewed app looks good.
-- **Stop at exactly two points:** (1) the browser sign-in, and (2) the single
-  preview confirmation before deploying. Everything else is automatic.
+  thing they do during a build is say whether the previewed app looks good.
+- **Sign-in is automatic.** The plugin signs in to UiPath on its own at the
+  start of every session, using the credentials entered in the plugin settings.
+  Never run an interactive/browser login and never ask for the environment.
+- **Stop at exactly one point:** the single preview confirmation before
+  deploying. Everything else is automatic.
 - All scripts live under `${CLAUDE_PLUGIN_ROOT}/scripts/`. Run them with
   `bash "${CLAUDE_PLUGIN_ROOT}/scripts/<name>.sh" ...`.
 
@@ -40,22 +42,23 @@ the CLI is ready. If it fails, run
 `bash "${CLAUDE_PLUGIN_ROOT}/scripts/bootstrap-uipath-env.sh"` once and continue.
 Tell the user only "Getting things ready…" if there is any wait.
 
-## Step 2 — Sign in (and reuse an existing session)
+## Step 2 — Confirm sign-in
 
-Run `bash "${CLAUDE_PLUGIN_ROOT}/scripts/session-info.sh"` and read the JSON.
+The plugin already signed in automatically at session start (fresh each
+session) using the App ID / Secret / Tenant from the plugin settings. Just
+confirm it worked: run `bash "${CLAUDE_PLUGIN_ROOT}/scripts/session-info.sh"`
+and read the JSON.
 
-- **If `loggedIn` is `true`:** tell the user they're already signed in and show
-  the organization, tenant, and environment in plain words. Ask whether to
-  continue with that account or switch. If they continue, skip to Step 3.
-- **If `loggedIn` is `false` (or they want to switch):** ask which environment
-  to use — **Cloud** (default, for most users), **Staging**, or **Alpha**. Then
-  run `bash "${CLAUDE_PLUGIN_ROOT}/scripts/login-uipath.sh" <cloud|staging|alpha>`.
-  This opens the browser. Tell the user to complete sign-in there.
-- After sign-in, run `session-info.sh` again to confirm. If it still reports not
-  signed in, tell the user sign-in didn't complete and offer to retry. Do not
-  proceed to deploy without a confirmed session.
+- **If `loggedIn` is `true`:** tell the user which organization, tenant, and
+  environment they're connected to, in plain words, and continue to Step 3.
+- **If `loggedIn` is `false`:** the UiPath credentials are missing or invalid.
+  Do **not** attempt a browser login. Tell the user to open this plugin's
+  **settings** and enter their **UiPath App ID, App Secret, and Tenant** (from a
+  Confidential External Application in UiPath → Admin → External Applications),
+  pick the **Environment**, then **start a new session** so sign-in runs again.
+  Do not proceed to deploy without a confirmed session.
 
-This one sign-in is reused automatically for build, publish, and deploy.
+This sign-in is reused automatically for build, publish, and deploy.
 
 ## Step 3 — Understand and create the app
 

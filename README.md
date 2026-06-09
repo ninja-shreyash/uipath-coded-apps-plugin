@@ -13,9 +13,10 @@ approve) publishes and deploys it — then hands back the app URL.
 1. **Sets up automatically.** A private, pinned UiPath CLI is installed the
    first time a session starts after you enable the plugin — before you do
    anything. No first-use wait, no install command.
-2. **Signs you in.** Opens the UiPath browser sign-in for Cloud, Staging, or
-   Alpha. If you're already signed in, it reuses that session. The same sign-in
-   is reused for publishing and deploying.
+2. **Signs you in automatically.** Using the UiPath app credentials you enter
+   once in the plugin settings, it signs in fresh at the start of every session —
+   no browser, no prompts. The same sign-in is reused for publishing and
+   deploying.
 3. **Builds your app.** Scaffolds a Coded App starter (form, dashboard, or
    inline-automation) and tailors it to your request.
 4. **Previews it.** Runs the app locally and gives you a URL to eyeball before
@@ -27,15 +28,33 @@ approve) publishes and deploys it — then hands back the app URL.
 
 | Component | Purpose |
 |-----------|---------|
-| Skill `uipath-coded-apps` | Orchestrates sign-in → create → preview → deploy |
-| `SessionStart` hook | Installs the pinned UiPath CLI once, automatically |
+| Skill `uipath-coded-apps` | Orchestrates create → preview → deploy |
+| `userConfig` modal | Collects UiPath App ID / Secret / Tenant / Environment at enable time |
+| `SessionStart` hook | Installs the pinned UiPath CLI once, then signs in fresh each session |
 | Scripts | Bootstrap, sign-in, session check, local preview, pack/publish/deploy |
 
 ## Requirements
 
-- **Node.js 20+** on the machine (the only prerequisite). The plugin installs
-  everything else itself.
-- A UiPath account with permission to publish Coded Apps.
+- **Node.js 20+** on the machine (the only software prerequisite). The plugin
+  installs everything else itself.
+- A **Confidential External Application** in UiPath (Admin → External
+  Applications → Add → Confidential application) with the **application scopes**
+  needed to publish/deploy Coded Apps. Note its **App ID** and **App Secret**.
+
+## Configure (one-time)
+
+When you enable the plugin, a settings form asks for:
+
+| Field | Where to get it |
+|-------|-----------------|
+| **App ID (Client ID)** | The External Application's App ID |
+| **App Secret (Client Secret)** | The External Application's App Secret (stored securely, never shown in chat) |
+| **Tenant** | Your UiPath tenant name (e.g. `DefaultTenant`) |
+| **Environment** | `cloud`, `staging`, or `alpha` |
+
+The plugin uses these to sign in non-interactively (client credentials) — no
+browser, no per-session prompts. You can change them anytime from the plugin's
+settings.
 
 ## Install
 
@@ -62,8 +81,8 @@ Enable the plugin, then say something like:
 - "Build a dashboard coded app for my queue items and deploy it."
 - "Make an app on UiPath and give me the link."
 
-The plugin takes it from there. You only ever (1) sign in through the browser
-and (2) confirm the preview looks good.
+The plugin takes it from there. The only thing you do during a build is confirm
+the preview looks good — sign-in is automatic from your saved settings.
 
 ## Notes
 
