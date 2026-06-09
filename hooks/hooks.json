@@ -8,11 +8,6 @@
             "type": "command",
             "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/bootstrap-uipath-env.sh\"",
             "timeout": 600
-          },
-          {
-            "type": "command",
-            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/scripts/login-uipath.sh\"",
-            "timeout": 120
           }
         ]
       }

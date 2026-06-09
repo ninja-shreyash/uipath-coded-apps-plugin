@@ -1,6 +1,6 @@
 {
   "name": "uipath-coded-apps",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Create, pack, publish, and deploy UiPath Coded Apps end-to-end. Guided UiPath sign-in, no commands to run, returns the live app URL.",
   "author": {
     "name": "Shreyash Vaish"
@@ -11,32 +11,5 @@
     "low-code",
     "deploy",
     "orchestrator"
-  ],
-  "userConfig": {
-    "client_id": {
-      "type": "string",
-      "title": "UiPath App ID (Client ID)",
-      "description": "App ID of a Confidential External Application in UiPath (Admin → External Applications). Used for non-interactive sign-in.",
-      "required": true
-    },
-    "client_secret": {
-      "type": "string",
-      "title": "UiPath App Secret (Client Secret)",
-      "description": "App Secret for the same External Application. Stored securely and never shown in chat.",
-      "sensitive": true,
-      "required": true
-    },
-    "tenant_name": {
-      "type": "string",
-      "title": "Tenant",
-      "description": "UiPath tenant name to deploy into (e.g. DefaultTenant).",
-      "required": true
-    },
-    "environment": {
-      "type": "string",
-      "title": "Environment",
-      "description": "Which UiPath environment to sign in to: cloud, staging, or alpha.",
-      "default": "cloud"
-    }
-  }
+  ]
 }
